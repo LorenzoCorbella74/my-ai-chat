@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My AI Chat</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.6/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.3/purify.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>&#128209; AI CHAT with Deno/Ollama </h1>
+            <div>
+                <button id="themeToggleButton">☀️</button>
+
+                <!-- Sidebar Toggle Button -->
+                <button id="sidebarToggleButton">
+                    <span class="icon">&#128295;</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar">
+            <h2>Configure Model</h2>
+            <label for="systemPrompt">System Prompt:</label>
+            <textarea id="systemPrompt" rows="12"></textarea>
+            <label for="temperature">Temperature:</label>
+            <input type="range" id="temperature" min="0" max="1" step="0.05" value="0.7">
+            <span id="temperatureValue">0.7</span>
+        </div>
+
+        <div id="modelSummaryContainer">
+            <select id="modelSelector"></select>
+            <div id="modelSummary">
+            </div>
+        </div>
+        <div id="chatContainer">
+            <div id="chatMessages"></div>
+        </div>
+        <div id="inputContainer">
+            <textarea id="userInput" placeholder="Enter your message..."></textarea>
+            <button id="sendButton"><span class="icon">&#128270;</span></button>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
