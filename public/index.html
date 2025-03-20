@@ -18,10 +18,11 @@
             <h1>&#128209; AI CHAT with Deno/Ollama </h1>
             <div>
                 <button id="themeToggleButton">☀️</button>
-
-                <!-- Sidebar Toggle Button -->
                 <button id="sidebarToggleButton">
                     <span class="icon">&#128295;</span>
+                </button>
+                <button id="conversationSidebarToggleButton">
+                    <span class="icon">&#128214;</span>
                 </button>
             </div>
         </header>
@@ -34,6 +35,16 @@
             <label for="temperature">Temperature:</label>
             <input type="range" id="temperature" min="0" max="1" step="0.05" value="0.7">
             <span id="temperatureValue">0.7</span>
+        </div>
+
+        <!-- Conversation Sidebar -->
+        <div id="conversationSidebar" class="sidebar">
+            <div class="title-row">
+                <h2>Conversations</h2>
+                <button id="newConversationButton"> + </button>
+            </div>
+            <div id="conversationList"></div>
+ 
         </div>
 
         <div id="modelSummaryContainer">

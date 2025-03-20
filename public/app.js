@@ -10,33 +10,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const systemPrompt = document.getElementById('systemPrompt');
     const temperature = document.getElementById('temperature');
     const temperatureValue = document.getElementById('temperatureValue');
-
-    systemPrompt.value = 'You are a helpful assistant called MAX.';
-    temperature.value = 0.7;
-
+    const conversationList = document.getElementById('conversationList');
+    const newConversationButton = document.getElementById('newConversationButton');
+    const conversationSidebarToggleButton = document.getElementById('conversationSidebarToggleButton');
+    const conversationSidebar = document.getElementById('conversationSidebar');
+    
+    let messages = []
     let selectedModel = '';
     let currentBotMessageElement = null;
-
-    let messages = [
-        { role: 'system', content: '' },
-    ];
+    let selectedConversationId = null;
 
     // EVENT LISTENERS
     themeToggleButton.addEventListener('click', toggleTheme);
     sidebarToggleButton.addEventListener('click', toggleSidebar);
+    conversationSidebarToggleButton.addEventListener('click', toggleConversationSidebar);
     temperature.addEventListener('input', () => {
         temperatureValue.textContent = temperature.value;
     });
-
     // model selector
     modelSelector.addEventListener('change', (e) => {
         selectedModel = e.target.value;
         fetchModel(selectedModel);
     });
-
     // send btn
     sendButton.addEventListener('click', sendMessage);
-
     // input
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -44,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
             sendMessage();
         }
     });
-
     // copy buttons
     chatMessages.addEventListener('click', (e) => {
         if (e.target.classList.contains('copy-button')) {
@@ -63,9 +59,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         }
     });
+    newConversationButton.addEventListener('click', addConversation);
+    conversationList.addEventListener('click', (e) => {
+        if (e.target.classList.contains('conversation-item')) {
+            selectedConversationId = e.target.dataset.id;
+            fetchMessages(selectedConversationId);
+        }
+    });
 
     // Fetch available models
     fetchModels();
+
+    // Fetch conversations and set defaults
+    fetchConversations();
+
+    function setDefaults() {
+        systemPrompt.value = 'You are a helpful assistant called MAX.';
+        temperature.value = 0.7;
+        messages = [
+            { role: 'system', content: '' },
+        ];
+        chatMessages.innerHTML = '';
+    }
 
     function fetchModel(selectedModel) {
         fetch('http://localhost:3000/api/model?name=' + selectedModel)
@@ -117,6 +132,127 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
+    function fetchConversations() {
+        fetch('http://localhost:3000/api/conversations')
+            .then(response => response.json())
+            .then(data => {
+                conversationList.innerHTML = '';
+
+                setDefaults();
+
+                data.forEach(conversation => {
+                    const item = document.createElement('div');
+                    item.classList.add('conversation-item');
+                    item.dataset.id = conversation.id;
+                    item.textContent = conversation.title;
+
+                    // Add edit and delete buttons
+                    const div = document.createElement('div');
+                    const editButton = document.createElement('button');
+                    editButton.textContent = 'Edit';
+                    editButton.classList.add('edit-button');
+                    editButton.addEventListener('click', () => editConversation(conversation.id));
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.classList.add('delete-button');
+                    deleteButton.addEventListener('click', () => deleteConversation(conversation.id));
+
+                    div.appendChild(editButton);
+                    div.appendChild(deleteButton);
+                    item.appendChild(div);
+
+                    item.addEventListener('click', () => selectConversation(conversation.id));
+
+                    conversationList.appendChild(item);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching conversations:', error);
+            });
+    }
+
+    function selectConversation(conversationId) {
+        selectedConversationId = conversationId;
+        document.querySelectorAll('.conversation-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+        const selectedItem = document.querySelector(`.conversation-item[data-id="${conversationId}"]`);
+        if (selectedItem) {
+            selectedItem.classList.add('selected');
+        }
+    }
+
+    function addConversation() {
+        const title = prompt('Enter conversation title:');
+        if (title) {
+            fetch('http://localhost:3000/api/conversations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title }),
+            })
+                .then(response => response.json())
+                .then(({id:number}) => {
+                    selectedConversationId = number;
+                    fetchConversations();
+                })
+                .catch(error => {
+                    console.error('Error adding conversation:', error);
+                });
+        }
+    }
+
+    function editConversation(conversationId) {
+        const title = prompt('Enter new conversation title:');
+        if (title) {
+            fetch(`http://localhost:3000/api/conversations/${conversationId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    fetchConversations();
+                })
+                .catch(error => {
+                    console.error('Error editing conversation:', error);
+                });
+        }
+    }
+
+    function deleteConversation(conversationId) {
+        if (confirm('Are you sure you want to delete this conversation?')) {
+            fetch(`http://localhost:3000/api/conversations/${conversationId.toString()}`, {
+                method: 'DELETE',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    fetchConversations();
+                })
+                .catch(error => {
+                    console.error('Error deleting conversation:', error);
+                });
+        }
+    }
+
+    function fetchMessages(conversationId) {
+        fetch(`http://localhost:3000/api/messages?conversationId=${conversationId}`)
+            .then(response => response.json())
+            .then(data => {
+                chatMessages.innerHTML = '';
+                data.forEach(message => {
+                    addMessageToChat(message.role, message.content, true);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching messages:', error);
+            });
+    }
+
     function sendMessage() {
         const message = userInput.value.trim();
         if (message) {
@@ -124,6 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
             userInput.value = '';
 
             messages = [...messages, { role: 'user', content: message }];
+
+            saveMessageInConversation('user', message)
 
             // Create a new bot message element for this response
             currentBotMessageElement = createMessageElement('assistant');
@@ -155,6 +293,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function saveMessageInConversation(role, content) {
+        // Save message to the current conversation
+        if (selectedConversationId) {
+            fetch('http://localhost:3000/api/messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    conversationId: selectedConversationId,
+                    role,
+                    content
+                }),
+            })
+                .catch(error => {
+                    console.error('Error saving message:', error);
+                });
+        }
+    }
+
     function handleStreamingResponse(response) {
         return new Promise((resolve, reject) => {
             const reader = response.body.getReader();
@@ -165,6 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (done) {
                         messages = [...messages, { role: 'assistant', content: accumulatedContent }];
                         resolve({ response: accumulatedContent });
+                        saveMessageInConversation('assistant', accumulatedContent)
                         return;
                     }
 
@@ -236,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function toggleTheme() {
-        if(themeToggleButton.textContent === '🌙') {
+        if (themeToggleButton.textContent === '🌙') {
             themeToggleButton.textContent = '☀️';
         } else {
             themeToggleButton.textContent = '🌙';
@@ -246,6 +405,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleSidebar() {
         sidebar.classList.toggle('open');
+    }
+
+    function toggleConversationSidebar() {
+        conversationSidebar.classList.toggle('open');
     }
 
     hljs.highlightAll();

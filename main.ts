@@ -1,5 +1,7 @@
 import { serveDir } from "jsr:@std/http/file-server";
 import ollama from "npm:ollama";
+import { handleConversationsRequest } from "./routes/conversations.ts";
+import { handleMessagesRequest } from "./routes/messages.ts";
 
 const PORT = 3000;
 
@@ -9,8 +11,18 @@ async function handleRequest(request: Request) {
 
   console.log(`Handling request for ${pathname}`);
 
-  // GET CURRENNT MODEL
-  if (url.pathname === "/api/model" && request.method === "GET") {
+  // Handle conversations routes
+  if (pathname.startsWith("/api/conversations")) {
+    return handleConversationsRequest(request, url);
+  }
+
+  // Handle messages routes
+  if (pathname.startsWith("/api/messages")) {
+    return handleMessagesRequest(request, url);
+  }
+
+  // GET CURRENT MODEL
+  if (pathname === "/api/model" && request.method === "GET") {
     try {
       const name = url.searchParams.get("name") || "";
       const currentModel = await ollama.show({ model: name });
@@ -31,7 +43,7 @@ async function handleRequest(request: Request) {
   }
 
   // GET MODEL LIST
-  if (url.pathname === "/api/models" && request.method === "GET") {
+  if (pathname === "/api/models" && request.method === "GET") {
     try {
       const modelList = await ollama.list();
       return new Response(JSON.stringify(modelList), {
@@ -51,7 +63,7 @@ async function handleRequest(request: Request) {
   }
 
   // CHAT
-  if (url.pathname === "/api/chat" && request.method === "POST") {
+  if (pathname === "/api/chat" && request.method === "POST") {
     try {
       const { model, messages, temperature = 0.7, system } = await request.json();
       console.log({ model, messages });

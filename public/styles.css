@@ -204,3 +204,98 @@ body.dark-theme #userInput {
     width: 100%;
     height: 50%;
 }
+
+/* Conversation list styles */
+#conversationList {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.title-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+body.dark-theme #conversationList {
+    background-color: #333;
+    border-color: #444;
+}
+
+.conversation-item {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+body.dark-theme .conversation-item {
+    border-bottom-color: #444;
+}
+
+.conversation-item:hover {
+    background-color: #f0f0f0;
+}
+
+body.dark-theme .conversation-item:hover {
+    background-color: #444;
+}
+
+/* Highlight the selected conversation */
+.conversation-item.selected {
+    background-color: #d3d3d3;
+}
+
+/* Style for edit and delete buttons */
+.conversation-item .edit-button,
+.conversation-item .delete-button {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+#newConversationButton {
+    padding: 5px 10px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#newConversationButton:hover {
+    background-color: #0056b3;
+}
+
+/* Conversation sidebar styles */
+#conversationSidebar {
+    position: fixed;
+    left: -360px;
+    top: 0;
+    width: 320px;
+    height: 100%;
+    background-color: #fbfbfb;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.25);
+    padding: 20px;
+    transition: left 0.3s;
+}
+
+#conversationSidebar.open {
+    left: 0;
+}
+
+#conversationSidebarToggleButton {
+    position: fixed;
+    top: 32px;
+    left: 20px;
+    z-index: 10;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}

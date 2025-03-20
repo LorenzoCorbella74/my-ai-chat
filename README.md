@@ -19,6 +19,8 @@ deno task start
 - Highlight code snippets in the chat messages.
 - Use markdown in the chat messages to format markdown text.
 - Light and dark themes.
+- Manage conversations: add, edit, and delete conversations.
+- Configure model system prompt and temperature via a sidebar.
 
 ## Dependencies
 
@@ -26,6 +28,7 @@ deno task start
 - [highlight.js](https://highlightjs.org/)
 - [marked](https://marked.js.org/)
 - [DOMPurify](https://github.com/cure53/DOMPurify)
+- [SQLite3 in Deno](https://docs.deno.com/examples/http_server_oak_crud_middleware_with_sqlite3_db/)
 
 ## License
 
