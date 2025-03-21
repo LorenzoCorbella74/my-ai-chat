@@ -102,6 +102,7 @@ export function initializeMainPage() {
         const message = userInput.value.trim();
         if (message) {
             addMessageToChat('user', message, true);
+            
             userInput.value = '';
 
             setMessages([...state.messages, { role: 'user', content: message }]);
@@ -110,6 +111,9 @@ export function initializeMainPage() {
 
             // Create a new bot message element for this response
             currentBotMessageElement = createMessageElement('assistant');
+            const spinner = document.createElement('div');
+            spinner.classList.add('spinner');
+            currentBotMessageElement.appendChild(spinner);
             chatMessages.appendChild(currentBotMessageElement);
 
             fetch('http://localhost:3000/api/ollama/chat', {
@@ -142,6 +146,7 @@ export function initializeMainPage() {
         return new Promise((resolve, reject) => {
             const reader = response.body.getReader();
             let accumulatedContent = '';
+            let firstChunkReceived = false;
 
             function read() {
                 reader.read().then(({ done, value }) => {
@@ -162,6 +167,13 @@ export function initializeMainPage() {
                                 if (data.message && data.message.content) {
                                     accumulatedContent += data.message.content;
                                     updateMessageContent(currentBotMessageElement, accumulatedContent, true);
+                                    if (!firstChunkReceived) {
+                                        firstChunkReceived = true;
+                                        const spinner = currentBotMessageElement.querySelector('.spinner');
+                                        if (spinner) {
+                                            spinner.remove();
+                                        }
+                                    }
                                 }
                             } catch (error) {
                                 console.error("Error parsing stream data:", error, line);
