@@ -21,6 +21,7 @@ deno task start
 - Light and dark themes.
 - Manage conversations: add, edit, and delete conversations.
 - Configure model system prompt and temperature via a sidebar.
+- Download single chat as markdown file.
 
 ## Dependencies
 

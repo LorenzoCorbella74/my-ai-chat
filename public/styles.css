@@ -1,15 +1,43 @@
+/* Definisci le variabili CSS per il tema chiaro */
+:root {
+    --background-color: white;
+    --text-color: #333;
+    --border-color: #fbfbfb;
+    --input-background-color: #fff;
+    --input-text-color: #333;
+    --input-border-color: #fbfbfb;
+    --button-background-color: transparent;
+    --button-hover-background-color: #e0faf1;
+    --sidebar-background-color: #fbfbfb;
+    --sidebar-shadow-color: rgba(0, 0, 0, 0.25);
+    --conversation-item-hover-background-color: #f0f0f0;
+    --selected-conversation-background-color: #e0faf1;
+}
+
+/* Definisci le variabili CSS per il tema scuro */
+body.dark-theme {
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --border-color: #444;
+    --input-background-color: #333;
+    --input-text-color: #fff;
+    --input-border-color: #444;
+    --button-background-color: transparent;
+    --button-hover-background-color: #005662;
+    --sidebar-background-color: #1e1e1e;
+    --sidebar-shadow-color: rgba(0, 0, 0, 0.25);
+    --conversation-item-hover-background-color: #444;
+    --selected-conversation-background-color: #005662;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: white;
+    background-color: var(--background-color);
+    color: var(--text-color);
     margin: 0;
     padding: 0;
     transition: background-color 0.3s, color 0.3s;
     box-sizing: border-box;
-}
-
-body.dark-theme {
-    background-color: #121212;
-    color: #ffffff;
 }
 
 .container {
@@ -19,11 +47,7 @@ body.dark-theme {
     transition: margin-left 0.3s;
 }
 
-.container.shifted {
-    margin-left: 320px;
-}
-
-.row{
+.row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -32,16 +56,11 @@ body.dark-theme {
 #modelSelector {
     margin-top: 10px;
     padding: 5px;
-    border: 1px solid #fbfbfb;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
-    background-color: #fff;
-    color: #333;
+    background-color: var(--input-background-color);
+    color: var(--input-text-color);
     min-width: 200px;
-}
-
-body.dark-theme #modelSelector {
-    background-color: #333;
-    color: #fff;
 }
 
 #modelSummaryContainer {
@@ -54,21 +73,16 @@ body.dark-theme #modelSelector {
 #modelSummary {
     font-size: 12px;
     margin-top: 10px;
-    margin-right:6px;
+    margin-right: 6px;
 }
 
 #chatContainer {
-    border: 1px solid #fbfbfb;
+    border: 1px solid var(--border-color);
     padding: 10px;
-    background-color: #fff;
+    background-color: var(--input-background-color);
     height: 65vh;
     overflow-y: scroll;
     border-radius: 5px;
-}
-
-body.dark-theme #chatContainer {
-    background-color: #1e1e1e;
-    border-color: #444;
 }
 
 #chatMessages {
@@ -88,24 +102,24 @@ body.dark-theme #chatContainer {
 }
 
 body.dark-theme .user-message {
-    background-color: #005662;
+    background-color: var(--button-hover-background-color);
 }
 
 .assistant-message {
-    background-color: #fbfbfb;
+    background-color: var(--input-background-color);
     align-self: flex-start;
 }
 
 body.dark-theme .assistant-message {
-    background-color: #333;
+    background-color: var(--input-background-color);
 }
 
 .icon {
     width: 20px;
     height: 20px;
-    font-size:24px;
-    display:flex; 
-    justify-content:center;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
@@ -115,59 +129,50 @@ body.dark-theme .assistant-message {
     bottom: 6px;
     width: 100%;
     max-width: 800px;
-}
-
-body.dark-theme #inputContainer {
-    background-color: #1e1e1e;
-    border-top-color: #444;
+    background-color: var(--input-background-color);
+    border-top-color: var(--input-border-color);
 }
 
 #userInput {
     flex: 1;
     padding: 10px;
     font-size: 12px;
-    border: 1px solid #fbfbfb;
+    border: 1px solid var(--input-border-color);
     border-radius: 5px;
-    background-color: #fff;
-    color: #333;
-}
-
-body.dark-theme #userInput {
-    background-color: #333;
-    color: #fff;
-    border-color: #444;
+    background-color: var(--input-background-color);
+    color: var(--input-text-color);
 }
 
 #sendButton {
     padding: 10px 20px;
     margin-left: 10px;
-    background-color: transparent;
-    color: white;
+    background-color: var(--button-background-color);
+    color: var(--text-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
 #sendButton:hover {
-    background-color: #e0faf1;
+    background-color: var(--button-hover-background-color);
 }
 
 .copy-button {
     padding: 5px 10px;
     margin-left: 10px;
-    background-color: transparent;
+    background-color: var(--button-background-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
 .copy-button:hover {
-    background-color: #e0faf1;
+    background-color: var(--button-hover-background-color);
 }
 
 #themeToggleButton {
     padding: 5px 10px;
-    background-color: transparent;
+    background-color: var(--button-background-color);
     font-size: 24px;
     border: none;
     border-radius: 5px;
@@ -175,7 +180,7 @@ body.dark-theme #userInput {
 }
 
 #themeToggleButton:hover {
-    background-color: #e0faf1;
+    background-color: var(--button-hover-background-color);
 }
 
 /* Sidebar styles */
@@ -185,8 +190,8 @@ body.dark-theme #userInput {
     top: 0;
     width: 320px;
     height: 100%;
-    background-color: #fbfbfb;
-    box-shadow: -2px 0 5px rgba(0,0,0,0.25);
+    background-color: var(--sidebar-background-color);
+    box-shadow: -2px 0 5px var(--sidebar-shadow-color);
     padding: 20px;
     transition: right 0.3s;
 }
@@ -205,7 +210,7 @@ body.dark-theme #userInput {
     background-color: transparent;
 }
 
-#systemPrompt{
+#systemPrompt {
     width: 100%;
     height: 50%;
 }
@@ -214,47 +219,34 @@ body.dark-theme #userInput {
 #conversationList {
     margin-top: 20px;
     padding: 10px;
-    border: 1px solid #ccc;
-    background-color: #fff;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-background-color);
     border-radius: 5px;
     max-height: 200px;
     overflow-y: auto;
 }
 
-.title-row{
+.title-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-body.dark-theme #conversationList {
-    background-color: #333;
-    border-color: #444;
 }
 
 .conversation-item {
     padding: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-body.dark-theme .conversation-item {
-    border-bottom-color: #444;
-}
-
 .conversation-item:hover {
-    background-color: #f0f0f0;
-}
-
-body.dark-theme .conversation-item:hover {
-    background-color: #444;
+    background-color: var(--conversation-item-hover-background-color);
 }
 
 /* Highlight the selected conversation */
 .conversation-item.selected {
-    background-color: #d3d3d3;
+    background-color: var(--selected-conversation-background-color);
 }
 
 /* Style for edit and delete buttons */
@@ -262,20 +254,22 @@ body.dark-theme .conversation-item:hover {
 .conversation-item .delete-button {
     margin-left: 10px;
     cursor: pointer;
+    background-color: transparent;
+    border: none;
 }
 
 #newConversationButton {
     padding: 5px 10px;
     margin-top: 10px;
-    background-color: #007bff;
-    color: white;
+    background-color: var(--button-background-color);
+    color: var(--text-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
 #newConversationButton:hover {
-    background-color: #0056b3;
+    background-color: var(--button-hover-background-color);
 }
 
 /* Conversation sidebar styles */
@@ -285,10 +279,11 @@ body.dark-theme .conversation-item:hover {
     top: 0;
     width: 320px;
     height: 100%;
-    background-color: #fbfbfb;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.25);
+    background-color: var(--sidebar-background-color);
+    box-shadow: 2px 0 5px var(--sidebar-shadow-color);
     padding: 20px;
     transition: left 0.3s;
+    z-index: 10;
 }
 
 #conversationSidebar.open {
@@ -299,7 +294,7 @@ body.dark-theme .conversation-item:hover {
     position: fixed;
     top: 32px;
     left: 20px;
-    z-index: 10;
+    z-index: 20;
     border: none;
     cursor: pointer;
     background-color: transparent;
@@ -310,4 +305,13 @@ body.dark-theme .conversation-item:hover {
 #sendButton:disabled {
     background-color: #e0e0e0;
     cursor: not-allowed;
+}
+
+#downloadChatButton{
+    padding: 5px 10px;
+    margin-left: 10px;
+    background-color: var(--button-background-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }

@@ -50,9 +50,8 @@ export async function handleOllamaRequest(
   // CHAT
   if (pathname === "/api/ollama/chat" && request.method === "POST") {
     try {
-      const { model, messages, temperature = 0.7, system } = await request
-        .json();
-      console.log({ model, messages });
+      const { model, messages, temperature = 0.7, system } = await request.json();
+      console.log({ model, messages, temperature, system });
       if (!model || !messages) {
         return new Response(
           JSON.stringify({ error: "Model and prompt are required" }),
@@ -103,6 +102,27 @@ export async function handleOllamaRequest(
       console.error("Error fetching models:", error);
       return new Response(
         JSON.stringify({ error, message: "Failed to chat" }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+    }
+  }
+
+  // DOWNLOAD MARKDOWN FILE
+  if (pathname === "/api/ollama/download" && request.method === "POST") {
+    try {
+      const { content } = await request.json();
+      const markdownContent = content;
+      const headers = new Headers();
+      headers.set("Content-Type", "text/markdown");
+      headers.set("Content-Disposition", "attachment; filename=\"content.md\"");
+      return new Response(markdownContent, { status: 200, headers });
+    } catch (error) {
+      console.error("Error generating markdown file:", error);
+      return new Response(
+        JSON.stringify({ error, message: "Failed to generate markdown file" }),
         {
           status: 500,
           headers: { "Content-Type": "application/json" },

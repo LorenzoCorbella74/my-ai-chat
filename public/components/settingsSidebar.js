@@ -8,6 +8,9 @@ export function initializeSettingsSidebar() {
     const temperatureValue = document.getElementById('temperatureValue');
     const systemPrompt = document.getElementById('systemPrompt');
 
+    temperatureValue.textContent = temperature.value;
+    systemPrompt.value = state.systemPrompt;
+
     sidebarToggleButton.addEventListener('click', toggleSidebar);
     temperature.addEventListener('input', () => {
         temperatureValue.textContent = temperature.value;

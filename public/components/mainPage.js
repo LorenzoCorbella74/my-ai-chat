@@ -1,5 +1,5 @@
 import { state, setMessages } from '../state.js';
-import {updateMessageContent, createMessageElement, addMessageToChat} from '../utils.js';
+import { updateMessageContent, createMessageElement, addMessageToChat } from '../utils.js';
 
 export function initializeMainPage() {
     const modelSelector = document.getElementById('modelSelector');
@@ -8,6 +8,7 @@ export function initializeMainPage() {
     const userInput = document.getElementById('userInput');
     const sendButton = document.getElementById('sendButton');
     const themeToggleButton = document.getElementById('themeToggleButton');
+    const downloadChatButton = document.getElementById('downloadChatButton'); // Aggiungi questo
 
     let selectedModel = '';
     let currentBotMessageElement = null;
@@ -42,6 +43,8 @@ export function initializeMainPage() {
                 });
         }
     });
+
+    downloadChatButton.addEventListener('click', downloadChat); // Aggiungi questo
 
     fetchModels();
 
@@ -173,8 +176,6 @@ export function initializeMainPage() {
     }
 
     function saveMessageInConversation(role, content) {
-        // Implementa la logica per salvare il messaggio nella conversazione corrente
-        // Ad esempio, puoi inviare una richiesta al server per salvare il messaggio nel database
         fetch('http://localhost:3000/api/messages', {
             method: 'POST',
             headers: {
@@ -207,5 +208,35 @@ export function initializeMainPage() {
             themeToggleButton.textContent = '🌙';
         }
         document.body.classList.toggle('dark-theme');
+    }
+
+    function downloadChat() {
+        const content = state.messages.map(msg => `${msg.role}: ${msg.content}`).join('\n\n');
+        fetch('http://localhost:3000/api/ollama/download', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ content }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'chat.md';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+                console.error('Error downloading chat:', error);
+            });
     }
 }

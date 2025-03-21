@@ -1,5 +1,6 @@
 {
   "imports": {
+    "ollama": "npm:ollama@^0.5.14"
   },
   "tasks": {
     "start": "deno run --allow-net --allow-read --allow-env --allow-ffi --watch main.ts"

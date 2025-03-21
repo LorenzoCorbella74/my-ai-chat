@@ -6,7 +6,6 @@ export function initializeConversationsSidebar() {
     const newConversationButton = document.getElementById('newConversationButton');
     const conversationSidebarToggleButton = document.getElementById('conversationSidebarToggleButton');
     const conversationSidebar = document.getElementById('conversationSidebar');
-    const mainPage = document.querySelector('main');
 
     newConversationButton.addEventListener('click', addConversation);
     conversationSidebarToggleButton.addEventListener('click', toggleConversationSidebar);
@@ -36,12 +35,12 @@ export function initializeConversationsSidebar() {
                     // Add edit and delete buttons
                     const div = document.createElement('div');
                     const editButton = document.createElement('button');
-                    editButton.textContent = 'Edit';
+                    editButton.innerHTML = '<span class="icon">&#128221;</span>'; // Edit icon
                     editButton.classList.add('edit-button');
                     editButton.addEventListener('click', () => editConversation(conversation.id));
 
                     const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Delete';
+                    deleteButton.innerHTML = '<span class="icon">&#10060;</span>' // Delete icon
                     deleteButton.classList.add('delete-button');
                     deleteButton.addEventListener('click', () => deleteConversation(conversation.id));
 
@@ -132,6 +131,7 @@ export function initializeConversationsSidebar() {
             .then(response => response.json())
             .then(data => {
                 state.chatMessages.innerHTML = '';
+                setMessages(data);
                 data.forEach(message => {
                     addMessageToChat(message.role, message.content, true);
                 });
@@ -152,6 +152,5 @@ export function initializeConversationsSidebar() {
 
     function toggleConversationSidebar() {
         conversationSidebar.classList.toggle('open');
-        mainPage.classList.toggle('shifted');
     }
 }

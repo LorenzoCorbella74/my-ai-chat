@@ -42,17 +42,25 @@
             <div id="conversationSidebar" class="sidebar">
                 <div class="title-row">
                     <h2>Conversations</h2>
-                    <button id="newConversationButton"> + </button>
+                    <button id="newConversationButton">
+                        <span class="icon">&#10133;</span>
+                    </button>
                 </div>
                 <div id="conversationList"></div>
             </div>
             <main>
                 <div id="modelSummaryContainer">
-                    <select id="modelSelector"></select>
+                    <div>
+                        <select id="modelSelector"></select>
+                        <button id="downloadChatButton">
+                            <span class="icon">&#128189;</span>
+                        </button>
+                    </div>
                     <div id="modelSummary"></div>
                 </div>
                 <div id="chatContainer">
                     <div id="chatMessages"></div>
+
                 </div>
                 <div id="inputContainer">
                     <textarea id="userInput" placeholder="Enter your message..."></textarea>
