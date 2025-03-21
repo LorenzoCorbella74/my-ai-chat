@@ -46,10 +46,11 @@ export async function handleConversationsRequest(request: Request, url: URL): Pr
 
   // DELETE CONVERSATION
   if (pathname.startsWith("/api/conversations") && request.method === "DELETE") {
+    
     try {
       const id = parseInt(pathname.split("/").pop() || "", 10);
-      db.exec("DELETE FROM conversations WHERE id = ?", [id]);
       db.exec("DELETE FROM messages WHERE conversation_id = ?", [id]);
+      db.exec("DELETE FROM conversations WHERE id = ?", [id]);
       return new Response(JSON.stringify({ message: "Conversation deleted" }), {
         status: 200,
         headers: { "Content-Type": "application/json" },

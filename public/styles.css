@@ -16,9 +16,14 @@ body.dark-theme {
     max-width: 800px;
     margin: 0 auto;
     position: relative;
+    transition: margin-left 0.3s;
 }
 
-header {
+.container.shifted {
+    margin-left: 320px;
+}
+
+.row{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -298,4 +303,11 @@ body.dark-theme .conversation-item:hover {
     border: none;
     cursor: pointer;
     background-color: transparent;
+}
+
+/* Disable user input if no conversation is selected */
+#userInput:disabled,
+#sendButton:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
 }

@@ -14,7 +14,7 @@
 
 <body>
     <div class="container">
-        <header>
+        <header class="row">
             <h1>&#128209; AI CHAT with Deno/Ollama </h1>
             <div>
                 <button id="themeToggleButton">☀️</button>
@@ -38,29 +38,30 @@
         </div>
 
         <!-- Conversation Sidebar -->
-        <div id="conversationSidebar" class="sidebar">
-            <div class="title-row">
-                <h2>Conversations</h2>
-                <button id="newConversationButton"> + </button>
+        <section class="row">
+            <div id="conversationSidebar" class="sidebar">
+                <div class="title-row">
+                    <h2>Conversations</h2>
+                    <button id="newConversationButton"> + </button>
+                </div>
+                <div id="conversationList"></div>
             </div>
-            <div id="conversationList"></div>
- 
-        </div>
-
-        <div id="modelSummaryContainer">
-            <select id="modelSelector"></select>
-            <div id="modelSummary">
-            </div>
-        </div>
-        <div id="chatContainer">
-            <div id="chatMessages"></div>
-        </div>
-        <div id="inputContainer">
-            <textarea id="userInput" placeholder="Enter your message..."></textarea>
-            <button id="sendButton"><span class="icon">&#128270;</span></button>
-        </div>
+            <main>
+                <div id="modelSummaryContainer">
+                    <select id="modelSelector"></select>
+                    <div id="modelSummary"></div>
+                </div>
+                <div id="chatContainer">
+                    <div id="chatMessages"></div>
+                </div>
+                <div id="inputContainer">
+                    <textarea id="userInput" placeholder="Enter your message..."></textarea>
+                    <button id="sendButton"><span class="icon">&#128270;</span></button>
+                </div>
+            </main>
+        </section>
     </div>
-    <script src="app.js"></script>
+    <script src="app.js" type="module"></script>
 </body>
 
 </html>
